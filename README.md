@@ -54,11 +54,12 @@ dd8af81cafb7   serv-a:0.1.0   "/docker-entrypoint.…"   About a minute ago   Up
 ```
 $ curl http://localhost:8001
 <h1>A</h1>
-$ curl http://localhost:8001
+$ curl http://localhost:8001/blog
 <h1>B</h1>
 $ curl http://localhost:8001
 <h1>A</h1>
 ```
+## Jenkins deploy
 
 ## ref
 - https://hub.docker.com/
