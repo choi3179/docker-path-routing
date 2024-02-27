@@ -6,6 +6,32 @@
 - https://www.nginx.com/resources/glossary/load-balancing/
 
 ## Process
+### nginx-path-route
+- config/default.conf
+```sh
+upstream serv {
+    server serv-a:80;
+}
+
+upstream blog {
+    server serv-b:80;
+}
+
+server {
+    listen 80;
+
+    location /
+    {
+        proxy_pass http://serv;
+    }
+
+    location /blog
+    {
+        proxy_pass http://blog/;
+    }
+}
+```
+
 ### build & push
 ```
 $ tree
@@ -23,7 +49,7 @@ $ tree
     └── index.html
 
 $ cd lb
-$ sudo docker build -t pysatellite/lb:0.1.0 .
+$ sudo docker build -t lb:0.1.0 .
 
 $ cd ../serv-a
 $ sudo docker build -t serv-a:0.1.0 .
@@ -45,19 +71,31 @@ $ sudo docker run -d -p 8001:80 --name lb --network lb-net lb:0.1.0
 ```
 $ sudo docker ps
 CONTAINER ID   IMAGE                      COMMAND                  CREATED              STATUS              PORTS                                   NAMES
-d86886fc9d9e   pysatellite/lb:0.1.0       "/docker-entrypoint.…"   3 seconds ago        Up 2 seconds        0.0.0.0:8001->80/tcp, :::8001->80/tcp   lb
-e4444ea35c22   pysatellite/serv-b:0.1.0   "/docker-entrypoint.…"   About a minute ago   Up About a minute   80/tcp                                  serv-b
-dd8af81cafb7   pysatellite/serv-a:0.1.0   "/docker-entrypoint.…"   About a minute ago   Up About a minute   80/tcp                                  serv-a
+d86886fc9d9e   lb:0.1.0       "/docker-entrypoint.…"   3 seconds ago        Up 2 seconds        0.0.0.0:8001->80/tcp, :::8001->80/tcp   lb
+e4444ea35c22   serv-b:0.1.0   "/docker-entrypoint.…"   About a minute ago   Up About a minute   80/tcp                                  serv-b
+dd8af81cafb7   serv-a:0.1.0   "/docker-entrypoint.…"   About a minute ago   Up About a minute   80/tcp                                  serv-a
 ```
 
 ### Success
 ```
 $ curl http://localhost:8001
 <h1>A</h1>
-$ curl http://localhost:8001
+$ curl http://localhost:8001/blog
 <h1>B</h1>
 $ curl http://localhost:8001
 <h1>A</h1>
+```
+## Jenkins deploy
+### Execute shell - Command
+```sh
+docker build -t choi3179/lb -f lb/Dockerfile lb/
+docker build -t choi3179/serv-a -f serv-a/Dockerfile serv-a/
+docker build -t choi3179/serv-b -f serv-b/Dockerfile serv-b/
+
+docker login -u choi3179 -p ******
+docker push choi3179/lb
+docker push choi3179/serv-a
+docker push choi3179/serv-b
 ```
 
 ## ref
