@@ -23,7 +23,7 @@ $ tree
     └── index.html
 
 $ cd lb
-$ sudo docker build -t pysatellite/lb:0.1.0 .
+$ sudo docker build -t lb:0.1.0 .
 
 $ cd ../serv-a
 $ sudo docker build -t serv-a:0.1.0 .
@@ -45,9 +45,9 @@ $ sudo docker run -d -p 8001:80 --name lb --network lb-net lb:0.1.0
 ```
 $ sudo docker ps
 CONTAINER ID   IMAGE                      COMMAND                  CREATED              STATUS              PORTS                                   NAMES
-d86886fc9d9e   pysatellite/lb:0.1.0       "/docker-entrypoint.…"   3 seconds ago        Up 2 seconds        0.0.0.0:8001->80/tcp, :::8001->80/tcp   lb
-e4444ea35c22   pysatellite/serv-b:0.1.0   "/docker-entrypoint.…"   About a minute ago   Up About a minute   80/tcp                                  serv-b
-dd8af81cafb7   pysatellite/serv-a:0.1.0   "/docker-entrypoint.…"   About a minute ago   Up About a minute   80/tcp                                  serv-a
+d86886fc9d9e   lb:0.1.0       "/docker-entrypoint.…"   3 seconds ago        Up 2 seconds        0.0.0.0:8001->80/tcp, :::8001->80/tcp   lb
+e4444ea35c22   serv-b:0.1.0   "/docker-entrypoint.…"   About a minute ago   Up About a minute   80/tcp                                  serv-b
+dd8af81cafb7   serv-a:0.1.0   "/docker-entrypoint.…"   About a minute ago   Up About a minute   80/tcp                                  serv-a
 ```
 
 ### Success
