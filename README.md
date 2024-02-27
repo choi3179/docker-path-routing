@@ -60,6 +60,17 @@ $ curl http://localhost:8001
 <h1>A</h1>
 ```
 ## Jenkins deploy
+### Execute shell - Command
+```sh
+docker build -t choi3179/lb -f lb/Dockerfile lb/
+docker build -t choi3179/serv-a -f serv-a/Dockerfile serv-a/
+docker build -t choi3179/serv-b -f serv-b/Dockerfile serv-b/
+
+docker login -u choi3179 -p ******
+docker push choi3179/lb
+docker push choi3179/serv-a
+docker push choi3179/serv-b
+```
 
 ## ref
 - https://hub.docker.com/
