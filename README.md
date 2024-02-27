@@ -6,6 +6,32 @@
 - https://www.nginx.com/resources/glossary/load-balancing/
 
 ## Process
+### nginx-path-route
+- config/default.conf
+```sh
+upstream serv {
+    server serv-a:80;
+}
+
+upstream blog {
+    server serv-b:80;
+}
+
+server {
+    listen 80;
+
+    location /
+    {
+        proxy_pass http://serv;
+    }
+
+    location /blog
+    {
+        proxy_pass http://blog/;
+    }
+}
+```
+
 ### build & push
 ```
 $ tree
